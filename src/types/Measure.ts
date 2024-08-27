@@ -1,2 +1,2 @@
-export const MeasureType = ['AGUA', 'GAS'];
-export type IMeasureType = 'AGUA' | 'GAS';
+export const MeasureType = ['WATER', 'GAS'];
+export type IMeasureType = 'WATER' | 'GAS';
