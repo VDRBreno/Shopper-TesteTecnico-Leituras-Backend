@@ -16,6 +16,7 @@ model Measure {
   image_url     String
   customer_code String
   customer      Customer @relation(fields: [customer_code], references: [id], onDelete: Cascade)
+  value         Int
 
   @@map("measure")
 }
