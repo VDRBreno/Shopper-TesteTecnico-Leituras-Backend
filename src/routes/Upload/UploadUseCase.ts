@@ -1,12 +1,15 @@
 import Measure from '@/entities/Measure';
+import { Customer } from '@/entities/Customer';
 import { IMeasureRepository } from '@/repositories/MeasureRepository';
+import { ICustomerRepository } from '@/repositories/CustomerRepository';
 import { FormattedFastifyError } from '@/utils/handleFastifyError';
 
 import { IUploadRequestDTO } from './UploadDTO';
 
 export default class UploadUseCase {
   constructor(
-    private measureRepository: IMeasureRepository
+    private measureRepository: IMeasureRepository,
+    private customerRepository: ICustomerRepository
   ) {}
 
   async execute(data: IUploadRequestDTO) {
@@ -23,6 +26,13 @@ export default class UploadUseCase {
         description: 'Leitura do mês já realizada',
         status: 409
       });
+    }
+
+    const customerExists = await this.customerRepository.findById({ customerId: data.customer_code });
+    if(!customerExists) {
+      const customer = new Customer(data.customer_code);
+
+      await this.customerRepository.create({ customer });
     }
 
     const measure = new Measure({

@@ -2,6 +2,7 @@ import { RouteOptions } from 'fastify';
 
 import handleFastifyError, { FormattedFastifyError } from '@/utils/handleFastifyError';
 import { PrismaMeasureRepository } from '@/repositories/implementations/PrismaMeasureRepository';
+import { PrismaCustomerRepository } from '@/repositories/implementations/PrismaCustomerRepository';
 
 import UploadRequestDTO from './UploadDTO';
 import UploadUseCase from './UploadUseCase';
@@ -22,10 +23,11 @@ const UploadController: RouteOptions = {
         });
 
       const prismaMeasureRepository = new PrismaMeasureRepository();
-      const uploadUseCase = new UploadUseCase(prismaMeasureRepository);
-      await uploadUseCase.execute(dto.value);
+      const prismaCustomerRepository = new PrismaCustomerRepository();
+      const uploadUseCase = new UploadUseCase(prismaMeasureRepository, prismaCustomerRepository);
+      const { image_url, measure_uuid, measure_value } = await uploadUseCase.execute(dto.value);
 
-      reply.status(200).send();
+      reply.status(200).send({ image_url, measure_uuid, measure_value });
 
     } catch(error) {
       handleFastifyError({ error, reply });
