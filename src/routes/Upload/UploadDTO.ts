@@ -18,7 +18,7 @@ export default class UploadRequestDTO extends RequestDTO<IUploadRequestDTO> {
       customer_code: Joi.string().required(),
       measure_datetime: Joi.date().required(),
       measure_type: Joi.string().allow(...MeasureType).insensitive().required()
-    });
+    }).required();
 
     this.assign(schema.validate(data));
 
