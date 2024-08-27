@@ -1,12 +1,12 @@
 import { prisma } from '@/prisma';
 
-import { IConfirmMeasure, ICreateMeasure, IFindByIdMeasure, IFindByIdMeasureResponse, IFindByMonthMeasure, IFindByMonthMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
+import { IConfirmMeasure, ICreateMeasure, IFindByIdMeasure, IFindByIdMeasureResponse, IFindByMonthMeasure, IFindByMonthMeasureResponse, IListByCustomerCodeMeasure, IListByCustomerCodeMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
 
 export class PrismaMeasureRepository implements IMeasureRepository {
 
   async findByMonth(data: IFindByMonthMeasure): Promise<IFindByMonthMeasureResponse> {
 
-    const date = data.date;
+    const date = data.measure_datetime;
 
     function genInitialDate() {
       const month = date.getMonth()+1;
@@ -26,7 +26,7 @@ export class PrismaMeasureRepository implements IMeasureRepository {
     const measure = await prisma.measure.findFirst({
       where: {
         customer_code: data.customer_code,
-        date: {
+        measure_datetime: {
           gte: genInitialDate(),
           lte: genFinalDate()
         }
@@ -41,11 +41,31 @@ export class PrismaMeasureRepository implements IMeasureRepository {
 
     const measure = await prisma.measure.findFirst({
       where: {
-        id: data.measureId
+        measure_uuid: data.measure_uuid
       }
     });
 
     return measure;
+
+  }
+
+  async listByCustomerCode(data: IListByCustomerCodeMeasure): Promise<IListByCustomerCodeMeasureResponse> {
+
+    const measures = await prisma.measure.findMany({
+      where: {
+        customer_code: data.customer_code,
+        measure_type: data.measure_type
+      },
+      select: {
+        measure_uuid: true,
+        measure_datetime: true,
+        measure_type: true,
+        has_confirmed: true,
+        image_url: true
+      }
+    });
+
+    return measures;
 
   }
 
@@ -61,7 +81,7 @@ export class PrismaMeasureRepository implements IMeasureRepository {
 
     await prisma.measure.update({
       where: {
-        id: data.measureId
+        measure_uuid: data.measure_uuid
       },
       data: {
         has_confirmed: true,

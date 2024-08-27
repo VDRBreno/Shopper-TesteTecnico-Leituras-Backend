@@ -2,10 +2,10 @@ import { randomUUID } from 'node:crypto';
 
 export class Customer {
 
-  public id: string;
+  public customer_code: string;
 
   constructor(id?: string) {
-    this.id = id ?? randomUUID();
+    this.customer_code = id ?? randomUUID();
   }
   
 }

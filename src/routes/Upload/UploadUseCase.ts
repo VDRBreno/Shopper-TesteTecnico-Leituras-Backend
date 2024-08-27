@@ -15,7 +15,7 @@ export default class UploadUseCase {
   async execute(data: IUploadRequestDTO) {
 
     const measureAlreadyExists = await this.measureRepository.findByMonth({
-      date: data.measure_datetime,
+      measure_datetime: data.measure_datetime,
       customer_code: data.customer_code
     });
 
@@ -38,8 +38,8 @@ export default class UploadUseCase {
     const measure = new Measure({
       image_url: '',
       customer_code: data.customer_code,
-      date: data.measure_datetime,
-      type: data.measure_type,
+      measure_datetime: data.measure_datetime,
+      measure_type: data.measure_type,
       has_confirmed: false,
       value: 10
     });
@@ -49,7 +49,7 @@ export default class UploadUseCase {
     return {
       image_url: measure.image_url,
       measure_value: measure.value,
-      measure_uuid: measure.id
+      measure_uuid: measure.measure_uuid
     };
 
   }

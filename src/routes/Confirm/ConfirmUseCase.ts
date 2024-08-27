@@ -10,7 +10,7 @@ export default class ConfirmUseCase {
 
   async execute(data: IConfirmRequestDTO) {
 
-    const measureExists = await this.measureRepository.findById({ measureId: data.measure_uuid });
+    const measureExists = await this.measureRepository.findById({ measure_uuid: data.measure_uuid });
     if(!measureExists) {
       throw FormattedFastifyError({
         error: 'Unable to confirm',
@@ -30,7 +30,7 @@ export default class ConfirmUseCase {
     }
 
     await this.measureRepository.confirm({
-      measureId: data.measure_uuid,
+      measure_uuid: data.measure_uuid,
       value: data.confirmed_value
     });
 
