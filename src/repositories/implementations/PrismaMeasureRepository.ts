@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 
-import { ICreateMeasure, IFindByMonthMeasure, IFindByMonthMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
+import { IConfirmMeasure, ICreateMeasure, IFindByIdMeasure, IFindByIdMeasureResponse, IFindByMonthMeasure, IFindByMonthMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
 
 export class PrismaMeasureRepository implements IMeasureRepository {
 
@@ -37,10 +37,36 @@ export class PrismaMeasureRepository implements IMeasureRepository {
 
   }
 
-  async create(data: ICreateMeasure) {
+  async findById(data: IFindByIdMeasure): Promise<IFindByIdMeasureResponse> {
+
+    const measure = await prisma.measure.findFirst({
+      where: {
+        id: data.measureId
+      }
+    });
+
+    return measure;
+
+  }
+
+  async create(data: ICreateMeasure): Promise<void> {
 
     await prisma.measure.create({
       data: data.measure
+    });
+
+  }
+
+  async confirm(data: IConfirmMeasure): Promise<void> {
+
+    await prisma.measure.update({
+      where: {
+        id: data.measureId
+      },
+      data: {
+        has_confirmed: true,
+        value: data.value
+      }
     });
 
   }
