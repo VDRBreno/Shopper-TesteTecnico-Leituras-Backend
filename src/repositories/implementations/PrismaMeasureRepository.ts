@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 
-import { ICreateMeasure, IFindByMonthMeasure, IFindByMonthMeasureResponse, IMeasureRepository } from '../MeasureRepository';
+import { ICreateMeasure, IFindByMonthMeasure, IFindByMonthMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
 
 export class PrismaMeasureRepository implements IMeasureRepository {
 
@@ -27,7 +27,8 @@ export class PrismaMeasureRepository implements IMeasureRepository {
       where: {
         customer_code: data.customer_code,
         date: {
-          in: [genInitialDate(), genFinalDate()]
+          gte: genInitialDate(),
+          lte: genFinalDate()
         }
       }
     });
