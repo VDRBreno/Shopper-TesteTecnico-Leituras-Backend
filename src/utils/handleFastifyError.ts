@@ -16,13 +16,15 @@ export function FormattedFastifyError(args: IFormattedFastifyError): IFormattedF
   return args;
 }
 interface IFormattedFastifyError {
-  message: string;
   error: any;
+  error_code: string;
+  description: string;
   status: number;
 }
 function isFormattedFastifyError(error: any): error is IFormattedFastifyError {
-  return 'message' in error 
-    && 'error' in error
+  return 'error' in error
+    && 'error_code' in error
+    && 'description' in error
     && 'status' in error;
 }
 
@@ -54,11 +56,11 @@ export default function handleFastifyError({
     console.log(`[${colorout.fg.red}${date}${colorout.reset}]`);
     console.log(`[${colorout.fg.red}Fastify-FORMATTED ERROR${colorout.reset}]`);
     console.log(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
-    console.log(error.message);
+    console.log(error.description);
     console.log(`[${colorout.fg.red}ERROR${colorout.reset}]`);
     console.log(error.error.stack ?error.error.stack :error.error);
 
-    reply.status(error.status).send(error.message);
+    reply.status(error.status).send({ error_code: error.error_code, error_description: error.description });
 
   } else if(error instanceof Error) {
 
@@ -77,8 +79,8 @@ export default function handleFastifyError({
     console.log(`[${colorout.fg.red}Fastify-ANY ERROR${colorout.reset}]`);
     console.log(error);
 
-    reply.status(500).send('Server Internal Error');
-    
+    reply.status(500).send('Erro Interno do Servidor');
+
   }
 
 }
