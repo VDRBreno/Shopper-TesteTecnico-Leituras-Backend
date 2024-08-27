@@ -52,7 +52,7 @@ export class PrismaMeasureRepository implements IMeasureRepository {
     const measures = await prisma.measure.findMany({
       where: {
         customer_code: data.customer_code,
-        measure_type: data.measure_type
+        measure_type: data.measure_type?.toUpperCase()
       },
       select: {
         measure_uuid: true,
