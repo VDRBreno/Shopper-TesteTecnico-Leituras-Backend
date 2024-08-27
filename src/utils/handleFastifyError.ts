@@ -44,40 +44,40 @@ export default function handleFastifyError({
 
   if(isMessageError(error)) {
 
-    console.log(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}Fastify-MESSAGE ERROR${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
-    console.log(error.message);
+    console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}Fastify-MESSAGE ERROR${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
+    console.error(error.message);
 
-    reply.status(500).send(error.message);
+    reply.status(500).send('Erro Interno do Servidor');
 
   } else if(isFormattedFastifyError(error)) {
 
-    console.log(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}Fastify-FORMATTED ERROR${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
-    console.log(error.description);
-    console.log(`[${colorout.fg.red}ERROR${colorout.reset}]`);
-    console.log(error.error.stack ?error.error.stack :error.error);
+    console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}Fastify-FORMATTED ERROR${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
+    console.error(error.description);
+    console.error(`[${colorout.fg.red}ERROR${colorout.reset}]`);
+    console.error(error.error.stack ?error.error.stack :error.error);
 
     reply.status(error.status).send({ error_code: error.error_code, error_description: error.description });
 
   } else if(error instanceof Error) {
 
-    console.log(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}Fastify-INSTANCE ERROR${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
-    console.log(error.message);
-    console.log(`[${colorout.fg.red}ERROR${colorout.reset}]`);
-    console.log(error.stack ?error.stack :error);
+    console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}Fastify-INSTANCE ERROR${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
+    console.error(error.message);
+    console.error(`[${colorout.fg.red}ERROR${colorout.reset}]`);
+    console.error(error.stack ?error.stack :error);
 
-    reply.status(500).send(error.message);
+    reply.status(500).send('Erro Interno do Servidor');
 
   } else {
     
-    console.log(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.log(`[${colorout.fg.red}Fastify-ANY ERROR${colorout.reset}]`);
-    console.log(error);
+    console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}Fastify-ANY ERROR${colorout.reset}]`);
+    console.error(error);
 
     reply.status(500).send('Erro Interno do Servidor');
 
