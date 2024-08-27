@@ -13,7 +13,7 @@ export default class Measure {
   constructor(props: Omit<Measure, 'id'>, id?: string) {
     this.id = id ?? randomUUID();
     this.date = props.date;
-    this.type = props.type;
+    this.type = props.type.toUpperCase();
     this.has_confirmed = props.has_confirmed;
     this.image_url = props.image_url;
     this.customer_code = props.customer_code;
