@@ -1,14 +1,14 @@
 import { prisma } from '@/prisma';
 
-import { ICreateCustomer, ICustomerRepository, IFindByIdCustomer, IFindByIdCustomerResponse } from '@/repositories/CustomerRepository';
+import { ICreateCustomer, ICustomerRepository, IFindByCodeCustomer, IFindByCodeCustomerResponse } from '@/repositories/CustomerRepository';
 
 export class PrismaCustomerRepository implements ICustomerRepository {
 
-  async findById(data: IFindByIdCustomer): Promise<IFindByIdCustomerResponse> {
+  async findByCode(data: IFindByCodeCustomer): Promise<IFindByCodeCustomerResponse> {
 
     const customer = await prisma.customer.findFirst({
       where: {
-        id: data.customerId
+        customer_code: data.customer_code
       }
     });
 

@@ -28,7 +28,7 @@ export default class UploadUseCase {
       });
     }
 
-    const customerExists = await this.customerRepository.findById({ customerId: data.customer_code });
+    const customerExists = await this.customerRepository.findByCode({ customer_code: data.customer_code });
     if(!customerExists) {
       const customer = new Customer(data.customer_code);
 

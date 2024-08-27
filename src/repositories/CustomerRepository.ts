@@ -1,15 +1,15 @@
 import { Customer } from '@/entities/Customer';
 
-export interface IFindByIdCustomer {
-  customerId: string;
+export interface IFindByCodeCustomer {
+  customer_code: string;
 }
-export type IFindByIdCustomerResponse = Customer | null;
+export type IFindByCodeCustomerResponse = Customer | null;
 
 export interface ICreateCustomer {
   customer: Customer;
 }
 
 export interface ICustomerRepository {
-  findById: (data: IFindByIdCustomer) => Promise<IFindByIdCustomerResponse>;
+  findByCode: (data: IFindByCodeCustomer) => Promise<IFindByCodeCustomerResponse>;
   create: (data: ICreateCustomer) => Promise<void>;
 }
