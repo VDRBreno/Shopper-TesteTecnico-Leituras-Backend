@@ -11,16 +11,14 @@ export class PrismaMeasureRepository implements IMeasureRepository {
     function genInitialDate() {
       const month = date.getMonth()+1;
       const year = date.getFullYear();
-      return new Date(`${year}-${month}-01`);
+      return new Date(`${year}-${month}-01T00:00:00`);
     }
     function genFinalDate() {
-      const month = date.getMonth()+1;
-      const year = date.getFullYear();
+      const initialDate = genInitialDate();
+      const dateNextMonth = new Date(initialDate).setMonth(new Date(initialDate).getMonth()+1);
+      const lastDayOfMonth = new Date(dateNextMonth).setDate(new Date(dateNextMonth).getDate()-1);
 
-      const dateNextMonth = new Date(`${year}-${month+1}-01`);
-      const newDate = new Date(dateNextMonth).setDate(new Date(dateNextMonth).getDate() - 1);
-
-      return new Date(newDate);
+      return new Date(lastDayOfMonth);
     }
 
     const measure = await prisma.measure.findFirst({
