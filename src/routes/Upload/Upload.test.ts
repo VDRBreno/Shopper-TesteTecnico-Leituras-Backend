@@ -1,13 +1,13 @@
 import imageBase64JSON from '@/tests/data/imageBase64.json';
+import catchThrowError from '@/tests/utils/catchThrowError';
 import { PrismaMeasureRepository } from '@/repositories/implementations/PrismaMeasureRepository';
 import { PrismaCustomerRepository } from '@/repositories/implementations/PrismaCustomerRepository';
+import { Customer } from '@/entities/Customer';
 
 import UploadRequestDTO from './UploadDTO';
 import UploadUseCase from './UploadUseCase';
-import { Customer } from '@/entities/Customer';
-import catchThrowError from '@/tests/utils/catchThrowError';
 
-describe('UploadDTO', () => {
+describe('UploadController', () => {
   
   const validImageBase64 = imageBase64JSON.validImageBase64;
   const prismaMeasureRepository = new PrismaMeasureRepository();
