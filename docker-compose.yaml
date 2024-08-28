@@ -1,0 +1,8 @@
+services:
+  api:
+    container_name: shopper-api
+    build:
+      context: .
+      target: production
+    ports:
+      - 3333:3333
