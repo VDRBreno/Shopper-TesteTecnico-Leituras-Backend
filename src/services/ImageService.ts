@@ -2,7 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 
 import { IMAGES_FOLDER_PATH } from '@/utils/paths';
-import { SERVER_URL } from '@/.';
+import { SERVER_URL } from '@/server.config';
 
 export class ImageService {
   
