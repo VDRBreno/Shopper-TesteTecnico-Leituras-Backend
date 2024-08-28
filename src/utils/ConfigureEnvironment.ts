@@ -1,17 +1,15 @@
-import path from 'node:path';
 import fs from 'node:fs';
 
-export default function ConfigureEnvironment() {
+import { IMAGES_FOLDER_PATH } from './paths';
 
-  const srcFolderPath = path.join(__dirname, '..');
+export default function ConfigureEnvironment() {
 
   checkImagesFolder();
 
   function checkImagesFolder() {
 
-    const imagesFolderPath = path.join(srcFolderPath, '..', 'images');
-    if(!fs.existsSync(imagesFolderPath)) {
-      fs.mkdirSync(imagesFolderPath);
+    if(!fs.existsSync(IMAGES_FOLDER_PATH)) {
+      fs.mkdirSync(IMAGES_FOLDER_PATH);
     }
 
   }
