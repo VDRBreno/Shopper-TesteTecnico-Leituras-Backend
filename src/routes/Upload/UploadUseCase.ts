@@ -3,6 +3,7 @@ import { Customer } from '@/entities/Customer';
 import { IMeasureRepository } from '@/repositories/MeasureRepository';
 import { ICustomerRepository } from '@/repositories/CustomerRepository';
 import { FormattedFastifyError } from '@/utils/handleFastifyError';
+import { ImageService } from '@/services/ImageService';
 
 import { IUploadRequestDTO } from './UploadDTO';
 
@@ -35,16 +36,29 @@ export default class UploadUseCase {
       await this.customerRepository.create({ customer });
     }
 
+    const imageService = new ImageService();
+
     const measure = new Measure({
-      image_url: '',
+      image_url: 'not_set',
       customer_code: data.customer_code,
       measure_datetime: data.measure_datetime,
       measure_type: data.measure_type,
       has_confirmed: false,
       value: 10
     });
+    
+    const imageFilename = `${measure.measure_uuid}.png`;
+    const imageURL = await imageService.saveImage(data.image, imageFilename);
+    measure.image_url = imageURL;
 
-    await this.measureRepository.create({ measure });
+    try {
+
+      await this.measureRepository.create({ measure });
+
+    } catch(error) {
+      imageService.deleteImage(imageFilename);
+      throw error;
+    }
 
     return {
       image_url: measure.image_url,
