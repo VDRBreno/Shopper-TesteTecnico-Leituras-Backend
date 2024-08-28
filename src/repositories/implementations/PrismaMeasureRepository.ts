@@ -1,10 +1,10 @@
 import { prisma } from '@/prisma';
 
-import { IConfirmMeasure, ICreateMeasure, IFindByIdMeasure, IFindByIdMeasureResponse, IFindByMonthMeasure, IFindByMonthMeasureResponse, IListByCustomerCodeMeasure, IListByCustomerCodeMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
+import { IConfirmMeasure, ICreateMeasure, IFindByIdMeasure, IFindByIdMeasureResponse, IFindByMonthAndTypeMeasure, IFindByMonthAndTypeMeasureResponse, IListByCustomerCodeMeasure, IListByCustomerCodeMeasureResponse, IMeasureRepository } from '@/repositories/MeasureRepository';
 
 export class PrismaMeasureRepository implements IMeasureRepository {
 
-  async findByMonth(data: IFindByMonthMeasure): Promise<IFindByMonthMeasureResponse> {
+  async findByMonthAndType(data: IFindByMonthAndTypeMeasure): Promise<IFindByMonthAndTypeMeasureResponse> {
 
     const date = data.measure_datetime;
 
@@ -27,7 +27,8 @@ export class PrismaMeasureRepository implements IMeasureRepository {
         measure_datetime: {
           gte: genInitialDate(),
           lte: genFinalDate()
-        }
+        },
+        measure_type: data.measure_type.toUpperCase()
       }
     });
 

@@ -15,9 +15,10 @@ export default class UploadUseCase {
 
   async execute(data: IUploadRequestDTO) {
 
-    const measureAlreadyExists = await this.measureRepository.findByMonth({
+    const measureAlreadyExists = await this.measureRepository.findByMonthAndType({
       measure_datetime: data.measure_datetime,
-      customer_code: data.customer_code
+      customer_code: data.customer_code,
+      measure_type: data.measure_type
     });
 
     if(measureAlreadyExists) {

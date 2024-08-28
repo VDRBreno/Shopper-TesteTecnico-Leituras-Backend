@@ -1,10 +1,11 @@
 import Measure from '@/entities/Measure';
 
-export interface IFindByMonthMeasure {
+export interface IFindByMonthAndTypeMeasure {
   customer_code: string;
   measure_datetime: Date;
+  measure_type: string;
 }
-export type IFindByMonthMeasureResponse = Measure | null;
+export type IFindByMonthAndTypeMeasureResponse = Measure | null;
 
 export interface IFindByIdMeasure {
   measure_uuid: string;
@@ -27,7 +28,7 @@ export interface IConfirmMeasure {
 }
 
 export interface IMeasureRepository {
-  findByMonth: (data: IFindByMonthMeasure) => Promise<IFindByMonthMeasureResponse>;
+  findByMonthAndType: (data: IFindByMonthAndTypeMeasure) => Promise<IFindByMonthAndTypeMeasureResponse>;
   findById: (data: IFindByIdMeasure) => Promise<IFindByIdMeasureResponse>;
   listByCustomerCode: (data: IListByCustomerCodeMeasure) => Promise<IListByCustomerCodeMeasureResponse>;
   create: (data: ICreateMeasure) => Promise<void>;
