@@ -16,7 +16,7 @@ export class ImageService {
       const imageFilePath = path.join(IMAGES_FOLDER_PATH, filename);
       fs.writeFileSync(imageFilePath, buffer);
   
-      return `${SERVER_URL}/images/${filename}`;
+      return `http://${SERVER_URL}/images/${filename}`;
   
     } catch(error) {
       throw {
