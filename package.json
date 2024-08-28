@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "test": "rimraf ./prisma/test.db && rimraf ./images/* --glob && dotenv -v DATABASE_URL=\"file:./tests.db\" -- prisma migrate deploy && jest",
-    "build": "rimraf ./build && rimraf ./prisma/dev.db && dotenv -v DATABASE_URL=\"file:./dev.db\" -- prisma migrate deploy && tsc --project tsconfig.build.json",
+    "build": "rimraf ./build && tsc --project tsconfig.build.json",
     "start": "node build/index.js"
   },
   "dependencies": {

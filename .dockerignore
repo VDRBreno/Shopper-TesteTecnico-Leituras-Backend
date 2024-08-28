@@ -1,6 +1,8 @@
 /node_modules
-/dist
+/build
 /repository-assets
 /images/*
 
 .env.example
+
+tests.db*
