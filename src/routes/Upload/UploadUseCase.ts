@@ -1,5 +1,6 @@
 import Measure from '@/entities/Measure';
 import { Customer } from '@/entities/Customer';
+import { GenerativeIA } from '@/entities/GenerativeIA';
 import { IMeasureRepository } from '@/repositories/MeasureRepository';
 import { ICustomerRepository } from '@/repositories/CustomerRepository';
 import { FormattedFastifyError } from '@/utils/handleFastifyError';
@@ -38,6 +39,9 @@ export default class UploadUseCase {
     }
 
     const imageService = new ImageService();
+    const generativeIA = new GenerativeIA();
+
+    const measure_value = await generativeIA.readMeterImage(data.image);
 
     const measure = new Measure({
       image_url: 'not_set',
@@ -45,7 +49,7 @@ export default class UploadUseCase {
       measure_datetime: data.measure_datetime,
       measure_type: data.measure_type,
       has_confirmed: false,
-      value: 10
+      value: measure_value
     });
     
     const imageFilename = `${measure.measure_uuid}.png`;
@@ -56,16 +60,16 @@ export default class UploadUseCase {
 
       await this.measureRepository.create({ measure });
 
+      return {
+        image_url: measure.image_url,
+        measure_value: measure.value,
+        measure_uuid: measure.measure_uuid
+      };
+
     } catch(error) {
       imageService.deleteImage(imageFilename);
       throw error;
     }
-
-    return {
-      image_url: measure.image_url,
-      measure_value: measure.value,
-      measure_uuid: measure.measure_uuid
-    };
 
   }
 }
