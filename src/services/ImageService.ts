@@ -5,6 +5,8 @@ import { IMAGES_FOLDER_PATH } from '@/utils/paths';
 import { SERVER_URL } from '@/server.config';
 
 export class ImageService {
+
+  private ImageServiceBaseURL = `http://${SERVER_URL}/images/`;
   
   constructor() {}
 
@@ -16,7 +18,7 @@ export class ImageService {
       const imageFilePath = path.join(IMAGES_FOLDER_PATH, filename);
       fs.writeFileSync(imageFilePath, buffer);
   
-      return `http://${SERVER_URL}/images/${filename}`;
+      return `${this.ImageServiceBaseURL}${filename}`;
   
     } catch(error) {
       throw {
