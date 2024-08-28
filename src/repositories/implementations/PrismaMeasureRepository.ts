@@ -11,7 +11,7 @@ export class PrismaMeasureRepository implements IMeasureRepository {
     function genInitialDate() {
       const month = date.getMonth()+1;
       const year = date.getFullYear();
-      return new Date(`${year}-${month}-01T00:00:00`);
+      return new Date(`${year}-${`0${month}`.slice(-2)}-01T00:00:00`);
     }
     function genFinalDate() {
       const initialDate = genInitialDate();
