@@ -47,12 +47,12 @@ describe('ListMeasure', () => {
         dto.validate({
           measure_type: 'Water'
         });
-  
+
         expect(dto.error).toBe("\"customer_code\" is required");
 
       });
 
-      it('Measure_type', () => {
+      it('measure_type', () => {
 
         const dto = new ListMeasureRequestDTO();
         dto.validate({
@@ -80,6 +80,7 @@ describe('ListMeasure', () => {
         measure_type: 'Water'
       });
 
+      expect(uploadDTO.error).toBeUndefined();
       if(uploadDTO.value) {
 
         const uploadUseCase = new UploadUseCase(prismaMeasureRepository, prismaCustomerRepository);
@@ -90,6 +91,7 @@ describe('ListMeasure', () => {
           customer_code: customer.customer_code
         });
   
+        expect(listMeasureDTO.error).toBeUndefined();
         if(listMeasureDTO.value) {
   
           const listMeasureUseCase = new ListMeasureUseCase(prismaMeasureRepository);
@@ -121,7 +123,9 @@ describe('ListMeasure', () => {
         measure_datetime: new Date(),
         measure_type: 'Gas'
       });
-
+      
+      expect(uploadDTOWater.error).toBeUndefined();
+      expect(uploadDTOGas.error).toBeUndefined();
       if(uploadDTOWater.value && uploadDTOGas.value) {
 
         const uploadUseCase = new UploadUseCase(prismaMeasureRepository, prismaCustomerRepository);
@@ -134,6 +138,7 @@ describe('ListMeasure', () => {
           measure_type: 'Water'
         });
   
+        expect(listMeasureDTO.error).toBeUndefined();
         if(listMeasureDTO.value) {
   
           const listMeasureUseCase = new ListMeasureUseCase(prismaMeasureRepository);

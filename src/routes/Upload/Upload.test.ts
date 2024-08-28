@@ -161,7 +161,8 @@ describe('Upload', () => {
       const customerShouldBeNull = await prismaCustomerRepository.findByCode({ customer_code: customer.customer_code });
   
       expect(customerShouldBeNull).toBeNull();
-  
+
+      expect(dto.error).toBeUndefined();
       if(dto.value) {
   
         const uploadUseCase = new UploadUseCase(prismaMeasureRepository, prismaCustomerRepository);
@@ -188,12 +189,13 @@ describe('Upload', () => {
         measure_type: 'Water'
       });
   
+      expect(dto.error).toBeUndefined();
       if(dto.value) {
   
         const uploadUseCase = new UploadUseCase(prismaMeasureRepository, prismaCustomerRepository);
         await uploadUseCase.execute(dto.value);
   
-        const result = await catchThrowError(async () => uploadUseCase.execute(dto.value!));
+        const result = await catchThrowError(async () => await uploadUseCase.execute(dto.value!));
   
         expect(result).toEqual({
           error: 'Unable to upload',
