@@ -2,16 +2,6 @@ import { FastifyReply } from 'fastify';
 
 import colorout from './colorout';
 
-interface IMessageError {
-  message: string;
-}
-function isMessageError(error: any): error is IMessageError {
-  return typeof error==='object' &&
-    Object.keys(error).length===1 &&
-    'message' in error &&
-    typeof error.message==='string';
-}
-
 export function FormattedFastifyError(args: IFormattedFastifyError): IFormattedFastifyError {
   return args;
 }
@@ -42,16 +32,7 @@ export default function handleFastifyError({
   console.error(`[${colorout.fg.red}FULL ERROR${colorout.reset}]`);
   console.error(error);
 
-  if(isMessageError(error)) {
-
-    console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.error(`[${colorout.fg.red}Fastify-MESSAGE ERROR${colorout.reset}]`);
-    console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
-    console.error(error.message);
-
-    reply.status(500).send('Erro Interno do Servidor');
-
-  } else if(isFormattedFastifyError(error)) {
+  if(isFormattedFastifyError(error)) {
 
     console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
     console.error(`[${colorout.fg.red}Fastify-FORMATTED ERROR${colorout.reset}]`);
