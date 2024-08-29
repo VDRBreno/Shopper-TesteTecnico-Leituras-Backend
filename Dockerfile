@@ -21,6 +21,7 @@ COPY .env /app/.env
 WORKDIR /app
 
 RUN npm ci --omit=dev
+RUN npx prisma migrate deploy
 
 COPY --from=build /app/build ./build
 

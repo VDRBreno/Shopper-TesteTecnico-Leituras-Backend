@@ -6,4 +6,4 @@
 *.env
 
 # Prisma
-tests.db*
+*.db*
