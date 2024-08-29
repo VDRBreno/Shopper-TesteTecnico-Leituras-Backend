@@ -18,6 +18,8 @@ COPY /prisma /app/prisma
 COPY package*.json /app
 COPY .env /app/.env
 
+ENV DATABASE_URL="file:./dev.db"
+
 WORKDIR /app
 
 RUN npm ci --omit=dev
