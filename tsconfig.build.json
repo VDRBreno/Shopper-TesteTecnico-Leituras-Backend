@@ -1,18 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
-    "rootDir": "./src",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "resolveJsonModule": true,
-    "outDir": "./build",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true
-  },
-  "include": ["src"],
+  "extends": ["./tsconfig.json"],
   "exclude": ["src/**/*.test.*", "src/tests"]
 }
