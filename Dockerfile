@@ -1,9 +1,7 @@
 # Build
-FROM node:lts AS build
+FROM node:20 AS build
 
-COPY /prisma /app/prisma
 COPY /src /app/src
-COPY jest.config.js /app
 COPY package*.json /app
 COPY tsconfig*.json /app
 
@@ -14,10 +12,11 @@ RUN npm install
 RUN npm run build
 
 # Prod
-FROM node:lts AS production
+FROM node:20 AS production
 
 COPY /prisma /app/prisma
 COPY package*.json /app
+COPY .env /app/.env
 
 WORKDIR /app
 
