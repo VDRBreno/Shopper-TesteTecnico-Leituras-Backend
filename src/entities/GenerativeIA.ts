@@ -15,7 +15,7 @@ export class GenerativeIA {
   async readMeterImage(data: string) {
 
     const genAI = new GoogleGenerativeAI(this.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const prompt = 'Extraia e identifique os números exibidos no mostrador do medidor da imagem fornecida. Forneça a leitura como um número contínuo. Apenas responda com a leitura numérica, sem texto adicional ou formatação. Não use vírgulas.';
     const image = {
       inlineData: {
