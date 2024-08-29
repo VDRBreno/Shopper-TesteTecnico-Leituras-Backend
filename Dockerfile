@@ -16,10 +16,10 @@ RUN npm run build
 # Prod
 FROM node:lts AS production
 
-WORKDIR /app
-
 COPY /prisma /app/prisma
 COPY package*.json /app
+
+WORKDIR /app
 
 RUN npm ci --omit=dev
 
