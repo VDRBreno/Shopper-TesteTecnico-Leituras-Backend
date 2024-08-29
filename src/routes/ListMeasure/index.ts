@@ -21,7 +21,7 @@ const ListMeasureController: RouteOptions = {
 
       const dto = new ListMeasureRequestDTO();
       if(!dto.validate(body) || !dto.value)
-        throw FormattedFastifyError({
+        throw new FormattedFastifyError({
           error: 'Unable to listMeasure',
           error_code: 'INVALID_DATA',
           description: `${dto.error}`,
@@ -29,7 +29,7 @@ const ListMeasureController: RouteOptions = {
         });
 
       if(body.measure_type && !MeasureType.includes(body.measure_type.toUpperCase()))
-        throw FormattedFastifyError({
+        throw new FormattedFastifyError({
           error: 'Unable to listMeasure',
           error_code: 'INVALID_DATA',
           description: 'Tipo de medição não permitida',

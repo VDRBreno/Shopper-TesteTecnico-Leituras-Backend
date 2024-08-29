@@ -14,7 +14,7 @@ const ConfirmController: RouteOptions = {
 
       const dto = new ConfirmRequestDTO();
       if(!dto.validate(req.body) || !dto.value)
-        throw FormattedFastifyError({
+        throw new FormattedFastifyError({
           error: 'Unable to confirm',
           error_code: 'INVALID_DATA',
           description: `${dto.error}`,

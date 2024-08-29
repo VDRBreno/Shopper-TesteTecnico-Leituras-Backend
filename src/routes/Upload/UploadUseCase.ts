@@ -23,7 +23,7 @@ export default class UploadUseCase {
     });
 
     if(measureAlreadyExists) {
-      throw FormattedFastifyError({
+      throw new FormattedFastifyError({
         error: 'Unable to upload',
         error_code: 'DOUBLE_REPORT',
         description: 'Leitura do mês já realizada',

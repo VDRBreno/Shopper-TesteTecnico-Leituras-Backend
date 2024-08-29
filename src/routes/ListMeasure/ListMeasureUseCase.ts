@@ -16,7 +16,7 @@ export default class ListMeasureUseCase {
     });
 
     if(measures.length===0)
-      throw FormattedFastifyError({
+      throw new FormattedFastifyError({
         error: 'Unable to listMeasure',
         error_code: 'MEASURES_NOT_FOUND',
         description: 'Nenhuma leitura encontrada',

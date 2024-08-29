@@ -12,7 +12,7 @@ export default class ConfirmUseCase {
 
     const measureExists = await this.measureRepository.findById({ measure_uuid: data.measure_uuid });
     if(!measureExists) {
-      throw FormattedFastifyError({
+      throw new FormattedFastifyError({
         error: 'Unable to confirm',
         error_code: 'MEASURE_NOT_FOUND',
         description: 'Leitura não encontrada',
@@ -21,7 +21,7 @@ export default class ConfirmUseCase {
     }
 
     if(measureExists.has_confirmed) {
-      throw FormattedFastifyError({
+      throw new FormattedFastifyError({
         error: 'Unable to confirm',
         error_code: 'CONFIRMATION_DUPLICATE',
         description: 'Leitura do mês já realizada',

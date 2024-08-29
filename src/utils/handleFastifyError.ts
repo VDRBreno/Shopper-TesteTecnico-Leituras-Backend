@@ -2,21 +2,23 @@ import { FastifyReply } from 'fastify';
 
 import colorout from './colorout';
 
-export function FormattedFastifyError(args: IFormattedFastifyError): IFormattedFastifyError {
-  return args;
+export class FormattedFastifyError {
+  
+  public error: any;
+  public error_code: string;
+  public description: string;
+  public status: number;
+
+  constructor(props: FormattedFastifyError) {
+    this.error = props.error;
+    this.error_code = props.error_code;
+    this.description = props.description;
+    this.status = props.status;
+  }
+
 }
-interface IFormattedFastifyError {
-  error: any;
-  error_code: string;
-  description: string;
-  status: number;
-}
-function isFormattedFastifyError(error: any): error is IFormattedFastifyError {
-  return 'error' in error
-    && 'error_code' in error
-    && 'description' in error
-    && 'status' in error;
-}
+
+const NODE_ENV = process.env.NODE_ENV ?? 'production';
 
 interface HandleFastifyErrorProps {
   error: any;
@@ -28,40 +30,49 @@ export default function handleFastifyError({
 }: HandleFastifyErrorProps) {
 
   const date = new Date().toISOString();
-
-  console.error(`[${colorout.fg.red}FULL ERROR${colorout.reset}]`);
-  console.error(error);
-
-  if(isFormattedFastifyError(error)) {
-
-    console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.error(`[${colorout.fg.red}Fastify-FORMATTED ERROR${colorout.reset}]`);
-    console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
-    console.error(error.description);
-    console.error(`[${colorout.fg.red}ERROR${colorout.reset}]`);
-    console.error(error.error.stack ?error.error.stack :error.error);
+  
+  if(error instanceof FormattedFastifyError) {
+    
+    if(NODE_ENV==='development') {
+      console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
+      console.error(`[${colorout.fg.red}FULL ERROR${colorout.reset}]`);
+      console.error(error);
+      console.error(`[${colorout.fg.red}FORMATTED ERROR${colorout.reset}]`);
+      console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
+      console.error(error.description);
+      console.error(`[${colorout.fg.red}ERROR${colorout.reset}]`);
+      console.error(error.error.stack ?error.error.stack :error.error);
+    }
 
     reply.status(error.status).send({ error_code: error.error_code, error_description: error.description });
 
   } else if(error instanceof Error) {
 
     console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.error(`[${colorout.fg.red}Fastify-INSTANCE ERROR${colorout.reset}]`);
+    if(error.stack) {
+      console.error(`[${colorout.fg.red}FULL ERROR${colorout.reset}]`);
+      console.error(error);
+    }
+    console.error(`[${colorout.fg.red}INSTANCE ERROR${colorout.reset}]`);
     console.error(`[${colorout.fg.red}MESSAGE${colorout.reset}]`);
     console.error(error.message);
     console.error(`[${colorout.fg.red}ERROR${colorout.reset}]`);
     console.error(error.stack ?error.stack :error);
 
-    reply.status(500).send('Erro Interno do Servidor');
+    reply.status(500).send({ error_code: 'INTERNAL_SERVER_ERROR', error_description: 'Ocorreu um erro inesperado' });
 
   } else {
     
     console.error(`[${colorout.fg.red}${date}${colorout.reset}]`);
-    console.error(`[${colorout.fg.red}Fastify-ANY ERROR${colorout.reset}]`);
+    console.error(`[${colorout.fg.red}ANY ERROR${colorout.reset}]`);
     console.error(error);
 
-    reply.status(500).send('Erro Interno do Servidor');
+    reply.status(500).send({ error_code: 'INTERNAL_SERVER_ERROR', error_description: 'Ocorreu um erro inesperado' });
 
   }
+
+}
+
+function handlePrintError() {
 
 }
