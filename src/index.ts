@@ -13,39 +13,37 @@ import colorout from '@/utils/colorout';
 import ConfigureEnvironment from '@/utils/ConfigureEnvironment';
 import { IMAGES_FOLDER_PATH } from '@/utils/paths';
 import routes from '@/routes';
-import { SERVER_CONFIG } from '@/server.config';
+import { SERVER_CONFIG, SERVER_URL } from '@/server.config';
 
-(async () => {
-  try {
+try {
 
-    ConfigureEnvironment();
-  
-    const server = fastify();
-  
-    server.register(fastifyCors, {
-      origin: '*'
+  ConfigureEnvironment();
+
+  const server = fastify();
+
+  server.register(fastifyCors, {
+    origin: '*'
+  });
+
+  server.register((instance, opts, next) => {
+    instance.register(fastifyStatic, {
+      root: IMAGES_FOLDER_PATH,
+      prefix: '/images'
     });
-  
-    server.register((instance, opts, next) => {
-      instance.register(fastifyStatic, {
-        root: IMAGES_FOLDER_PATH,
-        prefix: '/images'
-      });
-      next();
-    });
-  
-    for(const route of routes) {
-      server.route(route);
-    }
-  
-    server.listen({ port: SERVER_CONFIG.PORT, host: SERVER_CONFIG.HOST }, error => {
-      if(error) throw error;
-  
-      console.log(`[${colorout.fg.green}Server Running at ${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}${colorout.reset}]`);
-    });
-  
-  } catch(error) {
-    console.error(error);
-    process.exit(1);
+    next();
+  });
+
+  for(const route of routes) {
+    server.route(route);
   }
-})();
+
+  server.listen({ port: SERVER_CONFIG.PORT, host: SERVER_CONFIG.HOST }, error => {
+    if(error) throw error;
+
+    console.log(`[${colorout.fg.green}Server Running at ${SERVER_URL}${colorout.reset}]`);
+  });
+
+} catch(error) {
+  console.error(error);
+  process.exit(1);
+}
