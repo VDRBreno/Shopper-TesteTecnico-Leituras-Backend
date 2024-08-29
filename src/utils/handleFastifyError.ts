@@ -72,7 +72,3 @@ export default function handleFastifyError({
   }
 
 }
-
-function handlePrintError() {
-
-}
