@@ -19,10 +19,7 @@ FROM node:lts AS production
 WORKDIR /app
 
 COPY /prisma /app/prisma
-COPY /src /app/src
-COPY jest.config.js /app
 COPY package*.json /app
-COPY tsconfig*.json /app
 
 RUN npm ci --omit=dev
 
